@@ -1,6 +1,8 @@
 package com.jrw82.android.nerdlauncher;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -58,5 +61,19 @@ public class NerdLauncherFragment extends ListFragment {
         };
 
         setListAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        ResolveInfo resolveInfo = (ResolveInfo) l.getAdapter().getItem(position);
+        ActivityInfo activityInfo = resolveInfo.activityInfo;
+
+        if ( activityInfo != null ) {
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.setClassName(activityInfo.applicationInfo.packageName, activityInfo.name);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(i);
+        }
     }
 }
