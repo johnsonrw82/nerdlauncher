@@ -2,5 +2,8 @@
 <resources>
     <string name="app_name">Nerd Launcher</string>
     <string name="hello">Hello NerdLauncher!</string>
+    <string name="resolve_list_item_activityName">Activity Name</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_item_reorderTasks">Reorder Tasks</string>
+    <string name="title_runningTasks">Running Tasks</string>
 </resources>

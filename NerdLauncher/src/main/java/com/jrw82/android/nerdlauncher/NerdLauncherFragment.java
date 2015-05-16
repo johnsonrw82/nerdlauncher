@@ -6,10 +6,10 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +27,9 @@ public class NerdLauncherFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+
         Intent i = new Intent(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
 
@@ -56,6 +59,10 @@ public class NerdLauncherFragment extends ListFragment {
                 // set text to the activity label
                 textView.setText(ri.loadLabel(pm));
 
+                // use the drawable property of the text view to display the icon for the activity, without needing a custom layout
+                textView.setCompoundDrawablesWithIntrinsicBounds(ri.loadIcon(pm), null, null, null);
+                textView.setCompoundDrawablePadding(8);
+
                 return v;
             }
         };
@@ -76,4 +83,22 @@ public class NerdLauncherFragment extends ListFragment {
             startActivity(i);
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_nerd_launcher, menu);
+        MenuItem reorderTasks = menu.findItem(R.id.menu_item_reorderTasks);
+
+        reorderTasks.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                // launch dialog
+                Intent i = new Intent(getActivity(), ChangeTasksActivity.class);
+                startActivity(i);
+                return true;
+            }
+        });
+    }
+
 }
